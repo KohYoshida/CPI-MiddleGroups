@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>中分類推移</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <select id="selectItem"></select>
+    <button id="toggleButton">切り替え</button>
+    <svg id="retailprices" width="800" height="400"></svg>
+    <div id="tooltip" class="tooltip"></div>
+    <script src="script.js"></script>
+
+    <div class="about">
+        <details>
+            <summary class="descbox-title">見方</summary>
+                <div id="desc-box">
+                    <p id="description">
+                    項目を決めて値の推移を見る: リロード→プルダウン選択→ホバー<br><br>
+                    何となくの動きを見る: リロード→「切り替え」→ホバー<br><br>
+                    挙動が不安定ですみません</p>
+                </div>
+        </details>
+    </div>
+
+    <div class="about">
+        <details>
+            <summary>食料（中分類 12）</summary>
+            <div id="itemnames">
+                穀類（4）：米類、パン、麺類、他の穀類<br>
+                魚介類（4）：生鮮魚介、塩干魚介、魚肉練製品、他の魚介加工品<br>
+                肉類（2）：生鮮肉、加工肉<br>
+                乳卵類（3）：牛乳、乳製品、卵<br>
+                野菜・海藻（4）：生鮮野菜、乾物・海藻、大豆加工品、他の野菜・海藻加工品<br>
+                果物（2）：生鮮果物、果物加工品<br>
+                油脂・調味料（2）：油脂、調味料<br>
+                菓子類（1）：菓子類<br>
+                調理食品（2）：主食的調理食品、他の調理食品<br>
+                飲料（3）：茶類、コーヒー・ココア、他の飲料<br>
+                酒類（1）：酒類<br>
+                外食（2）：一般外食、学校給食
+            </div>
+            </details>
+
+            <details>
+            <summary>住居（中分類 2）</summary>
+            <div id="itemnames">
+                家賃（3）：民営家賃、公営・都市再生機構・公社家賃、持家の帰属家賃<br>
+                設備修繕・維持（2）：設備材料、工事その他のサービス
+            </div>
+            </details>
+
+            <details>
+            <summary>光熱・水道（中分類 4）</summary>
+            <div id="itemnames">
+                電気代（1）：電気代<br>
+                ガス代（1）：ガス代<br>
+                他の光熱（1）：他の光熱<br>
+                上下水道料（1）：上下水道料
+            </div>
+            </details>
+
+            <details>
+            <summary>家具・家事用品（中分類 6）</summary>
+            <div id="itemnames">
+                家庭用耐久財（3）：家事用耐久財、冷暖房用器具、一般家具<br>
+                室内装備品（1）：室内装備品<br>
+                寝具類（1）：寝具類<br>
+                家事雑貨（3）：食器類、台所用品、他の家事雑貨<br>
+                家事用消耗品（3）：ティシュ・トイレットペーパー、洗剤、他の家事用消耗品<br>
+                家事サービス（3）：家事代行料、清掃代、他の家事サービス
+            </div>
+            </details>
+
+            <details>
+            <summary>被服及び履物（中分類 7）</summary>
+            <div id="itemnames">
+                和服（1）：和服<br>
+                洋服（3）：男子用洋服、婦人用洋服、子供用洋服<br>
+                シャツ・セーター類（3）：男子用、婦人用、子供用<br>
+                下着類（3）：男子用、婦人用、子供用<br>
+                履物類（1）：履物類<br>
+                他の被服（1）：他の被服<br>
+                被服関連サービス（1）：被服関連サービス
+            </div>
+            </details>
+
+            <details>
+            <summary>保健医療（中分類 3）</summary>
+            <div id="itemnames">
+                医薬品・健康保持用摂取品（1）：医薬品・健康保持用摂取品<br>
+                保健医療用品・器具（1）：保健医療用品・器具<br>
+                保健医療サービス（1）：保健医療サービス
+            </div>
+            </details>
+
+            <details>
+            <summary>交通・通信（中分類 3）</summary>
+            <div id="itemnames">
+                交通（4）：鉄道運賃（JR）、鉄道運賃（JR以外）、有料道路料、他の交通<br>
+                自動車等関係費（3）：自動車、自転車、自動車等維持<br>
+                通信（1）：通信
+            </div>
+            </details>
+
+            <details>
+            <summary>教育（中分類 3）</summary>
+            <div id="itemnames">
+                授業料等（1）：授業料等<br>
+                教科書・学習参考教材（1）：教科書・学習参考教材<br>
+                補習教育（1）：補習教育
+            </div>
+            </details>
+
+            <details>
+            <summary>教養娯楽（中分類 4）</summary>
+            <div id="itemnames">
+                教養娯楽用耐久財（1）：教養娯楽用耐久財<br>
+                教養娯楽用品（5）：文房具、運動用具類、玩具、切り花、他の教養娯楽用品<br>
+                書籍・他の印刷物（3）：新聞代、雑誌、書籍<br>
+                教養娯楽サービス（6）：宿泊料、パック旅行費、月謝類、放送受信料、入場・観覧・ゲーム代、他の娯楽サービス
+            </div>
+            </details>
+
+            <details>
+            <summary>諸雑費（中分類 5）</summary>
+            <div id="itemnames">
+                理美容サービス（1）：理美容サービス<br>
+                理美容用品（3）：理容器具、石けん類、化粧品<br>
+                身の回り用品（3）：かばん類、腕時計・指輪、他の身の回り用品<br>
+                たばこ（1）：たばこ<br>
+                他の諸雑費（1）：他の諸雑費
+            </div>
+            </details>
+    </div>
+
+    
+
+</body>
+</html>
